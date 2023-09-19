@@ -16,7 +16,8 @@ def try_stat_link(link: str) -> Tuple[str, Tuple[str, Optional[os.stat_result]]]
 def filter_not_ours(data: Tuple[str, Tuple[str, Optional[os.stat_result]]]) -> bool:
     if data[1][1] is None:
         return False
-    if data[1][1].st_uid != os.getuid():
+    uid = os.getuid()
+    if uid != 0 and data[1][1].st_uid != uid:
         return False
     return True
 
