@@ -49,6 +49,9 @@ def filter_not_ours(
 ) -> TypeGuard[Tuple[str, Tuple[str, os.stat_result]]]:
     if data[1][1] is None:
         return False
+    if data[1][0].startswith('/nix/var/nix/profiles/'):
+        # We don't clean profiles yet.
+        return False
     uid = os.getuid()
     if uid != 0 and data[1][1].st_uid != uid:
         return False
